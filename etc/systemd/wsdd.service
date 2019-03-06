@@ -1,18 +1,17 @@
 [Unit]
-Description=Web Services Dynamic Discovery host daemon
+Description=Web Services on Devices (WSD) daemon
 ; Start after the network has been configured
 After=network-online.target
 Wants=network-online.target
-; It makes sense to have Samba running when wsdd starts, but is not required
-;Wants=smb.service
+; If the unit bound to is stopped, this unit will be stopped too.
+BindsTo=smbd.service
 
 [Service]
-Type=simple
-ExecStart=/usr/bin/wsdd --shortlog
-; Replace those with an unprivledged user/group that matches your environment,
-; like nobody/nogroup or daemon:daemon or a dedicated user for wsdd
+ExecStart=/usr/sbin/wsdd.py --shortlog
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
 User=nobody
-Group=nobody
+Group=nogroup
 
 [Install]
 WantedBy=multi-user.target
