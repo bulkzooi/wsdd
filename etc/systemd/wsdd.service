@@ -4,7 +4,8 @@ Description=Web Services on Devices (WSD) daemon
 BindsTo=smbd.service
 
 [Service]
-ExecStart=/usr/sbin/wsdd.py --shortlog
+EnvironmentFile=-/etc/default/wsdd
+ExecStart=/usr/sbin/wsdd.py $WSDD_OPTIONS
 ExecReload=/bin/kill -HUP $MAINPID
 Restart=on-failure
 User=nobody
